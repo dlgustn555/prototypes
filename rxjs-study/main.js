@@ -1,5 +1,5 @@
-import runRxjsSmaple from 'JS/rxjsTest.js'
+import runSampleCode from 'JS/sample'
 
 document.addEventListener('DOMContentLoaded', function () {
-  runRxjsSmaple()
+  runSampleCode()
 })

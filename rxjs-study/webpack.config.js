@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
   mode: 'none',
-  entry: './main.js',
+entry: ['@babel/polyfill', './main.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
@@ -34,12 +34,13 @@ module.exports = {
     alias: {
       JS: path.resolve(__dirname, 'src/assets/js/'),
       CSS: path.resolve(__dirname, 'src/assets/css/'),
-      IMAGE: path.resolve(__dirname, 'src/assets/images/')
+      IMAGE: path.resolve(__dirname, 'src/assets/images/'),
+      TEMPLATE: path.resolve(__dirname, 'src/assets/templates/'),
     }
   },
   devtool: 'chap-eval-source-map',
   devServer: {
     publicPath: '/dist/',
-    port: 1000
+    port: 10000
   }
 }
