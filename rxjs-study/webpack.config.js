@@ -39,6 +39,7 @@ module.exports = {
   },
   devtool: 'chap-eval-source-map',
   devServer: {
-    publicPath: '/dist/'
+    publicPath: '/dist/',
+    port: 1000
   }
 }
