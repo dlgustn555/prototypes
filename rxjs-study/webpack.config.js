@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const path = require('path')
 
 module.exports = {
@@ -34,11 +35,14 @@ module.exports = {
     alias: {
       JS: path.resolve(__dirname, 'src/assets/js/'),
       CSS: path.resolve(__dirname, 'src/assets/css/'),
-      IMAGE: path.resolve(__dirname, 'src/assets/images/')
+      IMAGE: path.resolve(__dirname, 'src/assets/images/'),
+      CONSTANT: path.resolve(__dirname, 'src/assets/constant/'),
+      TEMPLATE: path.resolve(__dirname, 'src/assets/template')
     }
   },
   devtool: 'chap-eval-source-map',
   devServer: {
-    publicPath: '/dist/'
+    publicPath: '/dist/',
+    port: 10000
   }
 }
