@@ -11,5 +11,13 @@ module.exports = {
   devServer: {
     publicPath: '/dist/',
     port: '9000'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use:  ['style-loader', 'css-loader']
+      }
+    ]
   }
 }
