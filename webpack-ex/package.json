@@ -13,6 +13,7 @@
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^2.1.1",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.32.1",
     "webpack-cli": "^3.3.2",
