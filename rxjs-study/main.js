@@ -1,7 +1,9 @@
-import runRxJSCode from 'JS/rxjs_s1'
-import runStep2 from 'JS/rxjs_s2'
+// import runRxJSCode from 'JS/rxjs_s1'
+// import runStep2 from 'JS/rxjs_s2'
+import runExample2Code from 'JS/example2'
 
 document.addEventListener('DOMContentLoaded', function () {
-  runStep2()
-  runRxJSCode()
+  runExample2Code()
+  // runStep2()
+  // runRxJSCode()
 })
