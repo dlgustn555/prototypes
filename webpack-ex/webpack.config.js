@@ -5,6 +5,11 @@ module.exports = {
   entry: './main.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js'
+    filename: '[name].js',
+    publicPath: 'dist'
+  },
+  devServer: {
+    publicPath: '/dist/',
+    port: '9000'
   }
 }
