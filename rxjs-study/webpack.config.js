@@ -2,7 +2,10 @@ const path = require('path')
 
 module.exports = {
   mode: 'none',
-entry: ['@babel/polyfill', './main.js'],
+  entry: {
+    main: ['@babel/polyfill', './main.js'],
+    ex1: ['@babel/polyfill', './src/assets/js/ex1.js']
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
