@@ -41,6 +41,9 @@ module.exports = {
       filename: 'styles/[name].css',
       allChunks: true
     }),
-    new HtmlWebpackPlugin()
+    new HtmlWebpackPlugin({
+      title: '웹팩 개발환경 셋팅하기',
+      template: 'index.html'
+    })
   ],
 }
