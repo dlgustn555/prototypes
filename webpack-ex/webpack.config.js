@@ -25,6 +25,13 @@ module.exports = {
         })
       },
       {
+        test: /\.s(a|c)ss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        })
+      },
+      {
         test: /\.m?js$/,
         exclude: /node_modules/,
         use: {
