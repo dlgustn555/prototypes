@@ -1,5 +1,6 @@
 const path = require('path')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -11,6 +12,7 @@ module.exports = {
   },
   devServer: {
     publicPath: '/dist/',
+    contentBase: path.join(__dirname, 'dist'),
     port: '9000'
   },
   module: {
@@ -29,5 +31,6 @@ module.exports = {
       filename: 'styles/[name].css',
       allChunks: true
     }),
+    new HtmlWebpackPlugin()
   ],
 }
