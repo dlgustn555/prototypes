@@ -2,8 +2,8 @@ import '../style/carousel.css'
 import Mustache from 'mustache'
 import { carouselTempalte } from '../template/carouselTemplate'
 import { getSelector, getSelectorAll } from '../util'
-import { fromEvent } from 'rxjs'
-import { map, first, switchMap, takeUntil, startWith, withLatestFrom } from 'rxjs/operators'
+import { fromEvent, merge } from 'rxjs'
+import { map, mapTo, scan, first, switchMap, takeUntil, startWith, withLatestFrom, tap, share, distinct } from 'rxjs/operators'
 
 export default () => {
   document.body.innerHTML = Mustache.render(carouselTempalte)
@@ -16,26 +16,47 @@ export default () => {
   const move$ = fromEvent(eView, oEvents.move).pipe(getPageX)
   const end$ = fromEvent(eView, oEvents.end)
 
-  const drag$ = start$.pipe(
-    switchMap(startX => move$.pipe(
-      map(moveX => moveX - startX),
-      takeUntil(end$)
-    ))
-  )
-  const drop$ = drag$.pipe(
-    switchMap(() => end$.pipe(first())),
-    withLatestFrom(resize$)
-  )
-
   const resize$ = fromEvent(window, 'resize').pipe(
     startWith(0),
     map(() => eView.clientWidth)
   )
 
-  // resize$.subscribe(width => console.log('RESIZE: ', width))
+  const drag$ = start$.pipe(
+    switchMap(startX => move$.pipe(
+      map(moveX => moveX - startX),
+      takeUntil(end$)
+    )),
+    map(distinct => ({ distinct })),
+    share(),
+  )
+  const drop$ = drag$.pipe(
+    switchMap(distinct => end$.pipe(
+      first(),
+      map(() => distinct)
+    )),
+    withLatestFrom(resize$, (drag, size) => {
+      return { ...drag, size }
+    }),
+  )
 
-  drop$.subscribe(() => console.log('DROP!!'))
-  // drag$.subscribe(distinctX => console.log('Drag: ', distinctX))
+  const carousel$ = merge(drag$, drop$).pipe(
+    scan((state, { distinct, size }) => {
+      const updateState = {
+        from: distinct - (state.index * state.size),
+      }
+      updateState.to = !size ?  updateState.from : distinct
+
+      return { ...state, ...updateState }
+    }, {
+      from: 0,
+      to: 0,
+      index: 0,
+      size: 0
+    })
+  )
+
+
+  carousel$.subscribe(v => console.log(v))
 }
 
 const SUPPORT_TOUCH = 'ontouchstart' in window
