@@ -1,13 +1,17 @@
 import '../style/carousel.css'
+import '../style/carousel.scss'
 import Mustache from 'mustache'
-import { SUPPORT_TOUCH, THRESHOLD } from '../constant'
+import { panels, SUPPORT_TOUCH, THRESHOLD } from '../constant'
 import { carouselTempalte } from '../template/carouselTemplate'
 import { getSelector, getSelectorAll, translateX } from '../util'
 import { fromEvent, merge } from 'rxjs'
 import { map, mapTo, scan, first, switchMap, takeUntil, startWith, withLatestFrom, tap, share, distinct } from 'rxjs/operators'
 
+
 export default () => {
-  document.body.innerHTML = Mustache.render(carouselTempalte)
+  
+  renderCarousel()
+
   const eView = getSelector('#carousel')
   const eContainer = getSelector('.container', eView)
   const panelCount = getSelectorAll('.panel', eContainer).length
@@ -73,6 +77,9 @@ export default () => {
   carousel$.subscribe(state => translateX(eContainer, state.to))
 }
 
+const renderCarousel = () => {
+  document.body.innerHTML = Mustache.render(carouselTempalte, { panels })
+}
 
 const getPageX = observable$ => {
   return observable$.pipe(

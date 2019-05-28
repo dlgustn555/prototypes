@@ -8,7 +8,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
-    publicPath: 'dist'
+    publicPath: 'dist/'
   },
   devServer: {
     publicPath: '/dist/',
@@ -38,6 +38,16 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env']
+          }
+        }
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            outputPath: 'image',
+            name: '[name].[ext]?[hash]'
           }
         }
       }
