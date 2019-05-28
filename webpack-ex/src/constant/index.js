@@ -23,3 +23,4 @@ export const panels = [
 ]
 export const SUPPORT_TOUCH = 'ontouchstart' in window
 export const THRESHOLD = 30
+export const DEFAULT_DURATION = 300

@@ -1,20 +1,26 @@
 import '../style/carousel.css'
 import '../style/carousel.scss'
 import Mustache from 'mustache'
-import { panels, SUPPORT_TOUCH, THRESHOLD } from '../constant'
+import { panels, DEFAULT_DURATION, SUPPORT_TOUCH, THRESHOLD } from '../constant'
 import { carouselTempalte } from '../template/carouselTemplate'
-import { getSelector, getSelectorAll, translateX } from '../util'
-import { fromEvent, merge } from 'rxjs'
-import { map, mapTo, scan, first, switchMap, takeUntil, startWith, withLatestFrom, tap, share, distinct } from 'rxjs/operators'
+import { getSelector, translateX } from '../util'
+import {
+  defer, animationFrameScheduler, concat,
+  interval, fromEvent, merge, of
+} from 'rxjs'
+import {
+  take, takeWhile, mergeAll,
+  map, mapTo, scan, first, switchMap, takeUntil,
+  startWith, withLatestFrom, tap, share, distinct
+} from 'rxjs/operators'
 
 
 export default () => {
-  
   renderCarousel()
 
   const eView = getSelector('#carousel')
   const eContainer = getSelector('.container', eView)
-  const panelCount = getSelectorAll('.panel', eContainer).length
+  const panelCount = panels.length
   const oEvents = getEvents()
  
   const start$ = fromEvent(eView, oEvents.start).pipe(getPageX)
@@ -71,14 +77,31 @@ export default () => {
       to: 0,
       index: 0,
       size: 0
-    })
+    }),
+    switchMap(({ from, to }) => ( from === to ? of(to) : animation(from, to)))
   )
 
-  carousel$.subscribe(state => translateX(eContainer, state.to))
+  carousel$.subscribe(posX => translateX(eContainer, posX))
+}
+
+const animation = (from, to) => {
+  return defer(() => {
+    const scheduler = animationFrameScheduler;
+    const start = scheduler.now()
+    
+    const interval$ = interval(0, scheduler).pipe(
+      map(() => (scheduler.now() - start) / DEFAULT_DURATION),
+      takeWhile(rate => rate <= 1)
+    )
+
+    return concat(interval$, of(1)).pipe(
+      map(rate => from + (to - from ) * rate)
+    )
+  })
 }
 
 const renderCarousel = () => {
-  document.body.innerHTML = Mustache.render(carouselTempalte, { panels })
+  getSelector('#carousel_area').innerHTML = Mustache.render(carouselTempalte, { panels })
 }
 
 const getPageX = observable$ => {
