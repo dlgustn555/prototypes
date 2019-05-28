@@ -7,7 +7,12 @@ const getSelectorAll = (selector, eTarget = null) => {
   return eTarget.querySelectorAll(selector)
 }
 
+const translateX = (eTarget, posX) => {
+  eTarget.style.transform = `translate3d(${posX}px, 0, 0)`
+}
+
 export {
   getSelector,
-  getSelectorAll
+  getSelectorAll,
+  translateX
 }

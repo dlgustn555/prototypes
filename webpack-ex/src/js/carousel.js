@@ -1,7 +1,8 @@
 import '../style/carousel.css'
 import Mustache from 'mustache'
+import { SUPPORT_TOUCH, THRESHOLD } from '../constant'
 import { carouselTempalte } from '../template/carouselTemplate'
-import { getSelector, getSelectorAll } from '../util'
+import { getSelector, getSelectorAll, translateX } from '../util'
 import { fromEvent, merge } from 'rxjs'
 import { map, mapTo, scan, first, switchMap, takeUntil, startWith, withLatestFrom, tap, share, distinct } from 'rxjs/operators'
 
@@ -26,7 +27,7 @@ export default () => {
       map(moveX => moveX - startX),
       takeUntil(end$)
     )),
-    map(distinct => ({ distinct })),
+    map(distinct => ({ distinct })), 
     share(),
   )
   const drop$ = drag$.pipe(
@@ -44,7 +45,21 @@ export default () => {
       const updateState = {
         from: distinct - (state.index * state.size),
       }
-      updateState.to = !size ?  updateState.from : distinct
+      
+      if (!size) {
+        updateState.to = updateState.from
+        return { ...state, ...updateState }
+      }
+
+      let tobeIndex = state.index
+      if (Math.abs(distinct) >= THRESHOLD) {
+        tobeIndex = distinct < 0
+          ? Math.min(tobeIndex + 1, panelCount - 1)
+          : Math.max(tobeIndex - 1, 0)
+      }
+      updateState.index = tobeIndex
+      updateState.to = tobeIndex * size * -1
+      updateState.size = size
 
       return { ...state, ...updateState }
     }, {
@@ -55,11 +70,10 @@ export default () => {
     })
   )
 
-
-  carousel$.subscribe(v => console.log(v))
+  carousel$.subscribe(state => translateX(eContainer, state.to))
 }
 
-const SUPPORT_TOUCH = 'ontouchstart' in window
+
 const getPageX = observable$ => {
   return observable$.pipe(
     map(event => SUPPORT_TOUCH ? event.changedTouches[0].pageX : event.pageX)
