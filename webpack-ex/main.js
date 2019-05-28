@@ -1,5 +1,5 @@
-import runTest from  './src/js/test'
+import runCarousel from './src/js/carousel'
 
 window.addEventListener('DOMContentLoaded', () => {
-  runTest()
+  runCarousel()
 })
