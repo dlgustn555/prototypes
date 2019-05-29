@@ -8,8 +8,17 @@ const carouselTempalte = `
         {{/panels}}
       </ul>
   </div>
+  <div id="carousel_content">
+  </div>
 `
-
+const contentTemplate = `
+  <div>
+    <p>Post No. {{postNo}}</p>
+    <h2>{{title}}</h1>
+    <h4>{{body}}</h3>
+  </div>
+`
 export {
-  carouselTempalte
+  carouselTempalte,
+  contentTemplate
 }
