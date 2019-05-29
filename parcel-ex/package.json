@@ -11,6 +11,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/mustache": "^0.8.32",
     "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "mustache": "^3.0.1",
+    "rxjs": "^6.5.2"
   }
 }

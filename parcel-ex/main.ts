@@ -1,9 +1,5 @@
-interface IMessage {
-  message: string
-}
+import carouselRun from './src/js/carousel'
 
-const message: IMessage = {
-  message: 'Hello Parcel'
-}
-
-console.log(message.message)
+window.addEventListener('DOMContentLoaded', () => {
+  carouselRun()
+})
