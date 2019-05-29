@@ -10,3 +10,10 @@ export const carouselTemplate = `
   </div>
   <div id="carousel_content"></div>
 `
+export const contentTemplate = `
+  <div>
+    <p>Post No. {{postNo}}</p>
+    <h2>{{title}}</h1>
+    <h4>{{body}}</h3>
+  </div>
+`
