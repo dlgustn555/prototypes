@@ -4,6 +4,7 @@ const getSelector = (selector, eTarget = null) => {
 }
 
 const getSelectorAll = (selector, eTarget = null) => {
+  eTarget = eTarget || document
   return eTarget.querySelectorAll(selector)
 }
 
