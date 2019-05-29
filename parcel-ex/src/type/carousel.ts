@@ -1,3 +1,4 @@
 export type Panel = {
-  color: string
+  color: string,
+  image: string
 }
