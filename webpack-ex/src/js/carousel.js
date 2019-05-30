@@ -9,11 +9,10 @@ import {
   interval, fromEvent, merge, of
 } from 'rxjs'
 import {
-  take, takeWhile, mergeAll, filter, distinctUntilChanged,
-  map, mapTo, scan, first, switchMap, takeUntil,
-  startWith, withLatestFrom, tap, share, distinct
+  takeWhile,filter, distinctUntilChanged,
+  map, scan, first, switchMap, takeUntil,
+  startWith, withLatestFrom, share
 } from 'rxjs/operators'
-
 import { ajax } from 'rxjs/ajax'
 
 export default () => {
@@ -35,7 +34,7 @@ export default () => {
     distinctUntilChanged()
   ).subscribe(index => renderPostContent(eCarouselContent, index + 1))
 
-  carousel$.subscribe(({ index, posX }) => {
+  carousel$.subscribe(({ posX }) => {
     translateX(eContainer, posX)
   })
 }
@@ -71,7 +70,6 @@ const getPanelObservable = (drag$, drop$, panelCount) => {
       updateState.index = tobeIndex
       updateState.to = tobeIndex * size * -1
       updateState.size = size
-
       return { ...state, ...updateState }
     }, {
       from: 0,
@@ -121,6 +119,7 @@ const getDropObservable = (drag$, end$, resize$) => {
     share()
   )
 }
+
 const getDragObservable = (start$, end$, move$) => {
   return start$.pipe(
     switchMap(startX => move$.pipe(

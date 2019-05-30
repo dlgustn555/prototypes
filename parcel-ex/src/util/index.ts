@@ -9,3 +9,7 @@ export const getSelectorAll = (selector: string, eTarget: null | HTMLElement | D
   eTarget = eTarget || document
   return eTarget.querySelectorAll(selector)
 }
+
+export const translateX = (eTarget: HTMLElement, posX: number) => {
+  eTarget.style.transform = `translate3d(${posX}px, 0, 0)`
+}
