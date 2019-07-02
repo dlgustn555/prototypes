@@ -1,4 +1,7 @@
 **/node_modules
 **/dist
 **/*lock.json
+**/build
+**/ncp-debug.log
+**/npm-debug.log
 **/.cache
