@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function f(limit, arr) {
+      let sum = 0;
+      for(const a of arr) {
+        if (a % 2) {
+          const b = a * a;
+          sum += b;
+          if (--limit === 0) {
+            break;
+          }
+        }
+      }
+      console.log(sum);
+    }
+
+// 이터러블은 [Symbol.iterator]()를 통해 이터레이터를 반환한다.
+// 즉 이터러블은 Symbol.iteratr를 구현한 것이다.
+
+    function reduce(f, acc, iter) {
+      let sum = 0
+      for(const a of iter) {
+        sum += f(acc, a)
+      }
+      return sum;
+    }
+
+    console.log(reduce((acc, n) => ( acc + n), 0, [1, 2, 3, 4, 5]));
+
+  </script>
+</body>
+</html>

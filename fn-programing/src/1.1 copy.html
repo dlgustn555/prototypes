@@ -1,0 +1,137 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    const arr = [1, 2, 3];
+    for(let i =0; i < arr.length; i++) {
+      const a = arr[i];
+      console.log(a);
+    }
+    // array 는 이터러블의 한 종류
+    for( const a of [1, 2, 3] ) {
+      console.log(a);
+    }
+    
+    console.lg(arr[Symbol.iterator])
+    
+    // 이터러블
+    // 순회 가능하다.
+    // 이터레이터들을 가지고 있다.
+
+
+    // 이터레이터
+    // - { value, done } 객체를 리턴하는 next() 를 가진 값
+    // const arrIterator = arr[Symbol.iterator]() <== 이터레이터를 반환한다.
+
+    for (const a of arr) { // <== for-of 문은  arr[Symbol.iterator]() 호출하여 이터레이터.next()를 호출해 done 이 false 이면 value를 실행한다.
+      console.log(a)
+    }
+    // 제너레이터
+    // 이터레이터를 만드는 함수
+    //
+
+    // 클로저 : 함수가 실행되어질때 실행되어지는 환경을 기억...
+    // 고차함수: 함수를 인자로 받거나 함수리를 리턴..
+    // 
+
+
+    // 명령형 방식으로 map, filter 구현해보기
+    function map1(f, arr) {
+      let res = [];
+      for(let i = 0; i < arr.length; i++) {
+        res.push(f(arr[i]));
+      }
+      return res;
+    }
+
+    function filer1(f, arr) {
+      let res = [];
+      for(let i = 0; i < arr.lenght; i++) {
+        if(f(arr[i])) {
+          res.push(arr[i])
+        }
+      }
+      return res;
+    }
+
+
+
+    // [1, 2, 3].mpa(item => console.log(1));
+    // array가 지원하는 map ==== array가 아닌 경우 에러!!
+    
+    const a = documnt.querySelectorAll('*');
+    // a.map(item => console.log(item)) <==== error... a 는 array가 아니므로 map함수릴 지원하지 않느다.
+
+
+
+    // 함수형? 방식으로.... 이터러블 프로토콜의 다형성...
+    function map2(f, iterable) {
+      let res = [];
+      for(const i of iterable) {
+        res.push(f[i])
+      }
+      return res
+    }
+
+    function filter2(f, iterable) {
+      let res = [];
+      for(const i of iterable) { // <=== 이터러블 프로토콜을 사용하는 방식....
+        if (f(i)) {
+          res.push(i)
+        }
+      }
+      return res;
+    }
+
+    // 지연적으로 동작하는 map, fitler
+    const L = {};
+    L.map = function* (f, iter) {
+      // 없음 ==> let res = []
+      for(const a of iter) {
+        yield f(a);
+      }
+
+      // 없음. return res
+    }
+    console.log(...L.map((item) => item+ 10, [1, 2, 3]))
+
+    L.filter = function* (f, iter) {
+      // 없음 ==> let res = []
+      for(const a of iter) {
+        if(f(a)) yield f(a);
+      }
+
+      // 없음. return res
+    }
+
+
+
+
+    // 제너레이터를 이용해 map을 만들 경우, iter 가 매우 큰 array라면  동일한 빅사이즈의 array인 res이 생성되고,
+    // 해당 array가 실행될때까지 실행시간이 걸리고 메모리를 차지하고,
+    // return 되어야 하나의 빅사이즈 arry가 삭제된다.
+    // 근데 제너레이트는 빅사이즈의 arry를 또 만들 필요 없다.
+
+
+    const it = L.map(a => a +10, [1, 2, 3])
+    console.log(...it)
+
+    // 제너레이터는 이터레이터를 만든다.
+    // 이터레이터는 next() 를 가지고 있다.
+    // next()를 호출하면 { value: xxx, done: true/false } 객체를 반환한다.
+
+
+
+
+
+
+
+
+  </script>
+</body>
+</html>
