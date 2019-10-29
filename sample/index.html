@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+    <script src="https://ssl.pstatic.net/tveta/libs/ssp/polyfill/js/ssp.polyfill.js"></script>
+    <script>
+	if (spwp.polyfill.support()) {
+		spwp.polyfill.load();
+	}
+
+        var spwp = spwp || {};
+        spwp.cmd = spwp.cmd || [];
+        spwp.cmd.push(function () {
+
+            /* SSP SDK 기본 설정(Optional)
+                enablePersistAd : 해당 페이지에 정의된 전체 SSP 유닛을 통해 서빙되는 광고에 대해 퍼시스트 지원 여부(뒤로 가기 복귀 시점에 이전 요청된 광고 소재 리랜더링 여부), 기본값 false
+            */
+            spwp.setConfig({
+                enablePersistAd: false
+            });
+
+            /* 
+                * SSP 유닛 정보 설정
+                  * unitId : SSP 광고 유닛 ID
+                  * divId : 광고가 노출될 <div> 태그 id 값 지정
+                  * targeting(Optional) : 타게팅 파라미터, ex) 성별, 나이, 국가 등
+                  * extraOption(Optional) : 부가 파라미터, ex) 언론사 파라미터, NDP 광고의 경우 기존 요청 파라미터 일부(calp 등)
+            */
+            var adUnits = [{
+                unitId: "m_sports",
+                divId: "div-1",
+                targeting: {
+                    yob: "1990", gender: "M", uct: "KR"
+                },
+                extraOption: {
+                    oid: "020", sid1: "101", sid2: "234", calp: "home", gdid:"해당값"
+                }
+            },
+            {
+                unitId: "m_sports_smb",
+                divId: "div-2",
+                targeting: {
+                    yob: "1990", gender: "M", uct: "KR"
+                },
+                extraOption: {
+                    oid: "020", sid1: "101", sid2: "234"
+                }
+            }];
+
+            /* SSP 유닛 정보 추가 및 해당 유닛에 대한 광고 요청 */
+            spwp.addAdUnits(adUnits);
+            spwp.requestAds({   
+                adUnitIds: ["m_sports", "m_sports_smb"]
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2>Naver SSP WEB SDK Sample</h2>
+    <h5>Div-1</h5>
+    <div id='div-1'>
+        <script>
+            /* SSP SDK 통해 서빙된 광고 랜더링 */
+            spwp.cmd.push(function () {
+                spwp.renderAd("div-1");
+            });
+        </script>
+    </div>
+    ... 중략 ...
+    <div id='div-2'>
+        <script>
+            /* SSP SDK 통해 서빙된 광고 랜더링 */
+            spwp.cmd.push(function () {
+                spwp.renderAd("div-2");
+            });
+        </script>
+    </div>
+    </body>
+</html>

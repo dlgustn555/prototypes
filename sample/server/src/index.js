@@ -1,8 +1,9 @@
-const express = require('express');
+const Koa = require('koa')
+const bodyParser = require('koa-bodyparser')
 const api = require('./api');
 
 const PORT = 9003;
-const server = express();
+const server = new Koa();
 
 server.use(api);
 
