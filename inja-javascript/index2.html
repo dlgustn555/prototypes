@@ -1,0 +1,40 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./js/util.js"></script>
+</head>
+<body>
+    <table>
+        <tbody class="tbody"></tbody>
+    </table>
+<script>
+    const rowCount = 20000;
+    const diviedInto = 4;
+    const chunkSize = rowCount / diviedInto
+    let iteration = 0
+
+    const tbody = getElement('.tbody')
+
+    setTimeout(function generateRows() {
+        const base = chunkSize * iteration
+        for (let i = 0; i < chunkSize; i++) {
+            const tr = createElement('tr')
+            for (let j = 0; j < 6; j++) {
+                const td = createElement('td')
+                td.innerHTML = `${i + base}-${j}`
+                tr.appendChild(td)
+            }
+            tbody.appendChild(tr)
+        }
+        iteration++
+        if (iteration < diviedInto) {
+            setTimeout(generateRows, 0)
+        }
+    }, 0)
+    
+</script>
+</body>
+</html>
