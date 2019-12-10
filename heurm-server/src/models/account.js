@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const { Schema } = mongoose
 const crypto = require("crypto")
+const { generateToken } = require("../lib/token")
 
 function hash(password) {
   return crypto
@@ -11,26 +12,26 @@ function hash(password) {
 
 const Account = new Schema({
   profile: {
-    usename: String,
+    username: String,
     thumbnamil: {
       type: String,
       default: "/statics/img/super-mario.png"
+    }
+  },
+  email: { type: String },
+  social: {
+    facebook: {
+      id: String,
+      accessToken: String
     },
-    email: { type: String },
-    social: {
-      facebook: {
-        id: String,
-        accessToken: String
-      },
-      google: {
-        id: String,
-        accessToken: String
-      }
-    },
-    password: String,
-    thouhgtCount: { type: Number, default: 0 },
-    createAt: { type: Date, default: Date.now }
-  }
+    google: {
+      id: String,
+      accessToken: String
+    }
+  },
+  password: String,
+  thouhgtCount: { type: Number, default: 0 },
+  createAt: { type: Date, default: Date.now }
 })
 
 Account.statics.findByUsername = function(username) {
@@ -59,6 +60,15 @@ Account.statics.localRegister = function({ username, email, password }) {
 Account.methods.validatePassword = function(password) {
   const hashed = hash(password)
   return this.password === hashed
+}
+
+Account.methods.generateToken = function() {
+  const payload = {
+    _id: this._id,
+    profile: this.profile
+  }
+
+  return generateToken(payload, "account")
 }
 
 module.exports = mongoose.model("Account", Account)
