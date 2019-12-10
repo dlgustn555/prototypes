@@ -56,6 +56,11 @@ exports.localLogin = async ctx => {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7
     })
+    console.log("==============")
+    console.log("==============")
+    console.log(account.profile)
+    console.log("==============")
+    console.log("==============")
     ctx.body = account.profile
   } catch (e) {
     ctx.throw(500, e)
