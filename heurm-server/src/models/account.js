@@ -1,33 +1,35 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 const { Schema } = mongoose
-const crypto = require("crypto")
-const {generateToken} = require('../lib/token')
+const crypto = require('crypto')
+
+const { generateToken } = require('../lib/token')
 
 function hash(password) {
-  return crypto
-    .createHmac("sha256", process.env.SECRET_KEY)
-    .update(password)
-    .digest("hex")
+    return crypto
+        .createHmac('sha256', process.env.SECRET_KEY)
+        .update(password)
+        .digest('hex')
 }
 
 const Account = new Schema({
-  profile: {
-    username: String,
-    thumbnamil: {
-      type: String,
-      default: "/statics/img/super-mario.png"
-    }
-  },
-  email: { type: String },
+    profile: {
+        username: String,
+        thumbnamil: {
+            type: String,
+            default: '/statics/img/super-mario.png'
+        }
+    },
+    email: { type: String },
+
     social: {
-      facebook: {
-        id: String,
-        accessToken: String
-      },
-      google: {
-        id: String,
-        accessToken: String
-      }
+        facebook: {
+            id: String,
+            accessToken: String
+        },
+        google: {
+            id: String,
+            accessToken: String
+        }
     },
     password: String,
     thouhgtCount: { type: Number, default: 0 },
@@ -35,41 +37,41 @@ const Account = new Schema({
 })
 
 Account.statics.findByUsername = function(username) {
-  return this.findOne({ "profile.username": username }).exec()
+    return this.findOne({ 'profile.username': username }).exec()
 }
 
 Account.statics.findByEmail = function(email) {
-  return this.findOne({ email }).exec()
+    return this.findOne({ email }).exec()
 }
 
 Account.statics.findByEmailOrUsername = function({ username, email }) {
-  return this.findOne({
-    $or: [{ "profile.username": username }, { email }]
-  }).exec()
+    return this.findOne({
+        $or: [{ 'profile.username': username }, { email }]
+    }).exec()
 }
 
 Account.statics.localRegister = function({ username, email, password }) {
-  const account = new this({
-    profile: { username },
-    email,
-    password: hash(password)
-  })
+    const account = new this({
+        profile: { username },
+        email,
+        password: hash(password)
+    })
 
-  return account.save()
+    return account.save()
 }
 
 Account.methods.validatePassword = function(password) {
-  const hashed = hash(password)
-  return this.password === hashed
+    const hashed = hash(password)
+    return this.password === hashed
 }
 
 Account.methods.generateToken = function() {
-  const payload = {
-    _id: this._id,
-    profile: this.profile
-  }
+    const payload = {
+        _id: this._id,
+        profile: this.profile
+    }
 
-  return generateToken(payload, 'account')
+    return generateToken(payload, 'account')
 }
 
-module.exports = mongoose.model("Account", Account)
+module.exports = mongoose.model('Account', Account)
